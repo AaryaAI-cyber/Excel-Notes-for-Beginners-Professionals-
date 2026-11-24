@@ -13,7 +13,7 @@ Publishes **exactly one** Excel Notes module per calendar day to `main`, so the 
 5. Picks the next staging folder (`01` to `35`) that Git does not track yet.
 6. Validates the module before publishing:
    - `README.md`, `exercises_and_solutions.md`, `practice_workbook.xlsx`, and `images/` exist.
-   - Every relative link and image resolves.
+   - Every relative link and image resolves, including links inside nested Markdown docs such as `images/screenshots/README.md`. Each link resolves from the folder that contains its file, and fenced code examples are ignored.
    - The workbook is a valid `.xlsx` file and is under 2 MB.
    - No local, sandbox, or personal file paths appear.
    - The seven standard lesson sections are present.

@@ -173,6 +173,34 @@ function Get-NextModule {
     return $null
 }
 
+function Get-MarkdownProse {
+    param([string]$Text)
+
+    # Keep real prose and drop fenced code blocks plus inline code spans, so
+    # documentation examples are never mistaken for live links.
+    $lines = $Text -split "`r?`n"
+    $prose = New-Object System.Collections.Generic.List[string]
+    $inFence = $false
+    $fence = ''
+
+    foreach ($line in $lines) {
+        $trimmed = $line.TrimStart()
+        if (-not $inFence) {
+            if ($trimmed -match '^(`{3,}|~{3,})') {
+                $inFence = $true
+                $fence = $Matches[1].Substring(0, 3)
+                continue
+            }
+            $prose.Add([regex]::Replace($line, '`[^`]*`', ''))
+        }
+        elseif ($trimmed.StartsWith($fence)) {
+            $inFence = $false
+        }
+    }
+
+    return ($prose -join "`n")
+}
+
 function Test-Lesson {
     param([System.IO.DirectoryInfo]$Dir)
 
@@ -196,32 +224,39 @@ function Test-Lesson {
     $linkPattern      = '(?<!!)\[[^\]]*\]\(([^)\s#]+)'
     $imagePattern     = '!\[[^\]]*\]\(([^)\s]+)'
 
-    foreach ($markdown in @($readme, $exercises)) {
-        if (-not (Test-Path -LiteralPath $markdown)) { continue }
-        $text = [System.IO.File]::ReadAllText($markdown, [System.Text.Encoding]::UTF8)
+    # Check every Markdown file in the module, including nested docs such as
+    # images/screenshots/README.md. Each link resolves from the folder that
+    # contains its file, not from the module root.
+    $markdownFiles = @(Get-ChildItem -LiteralPath $Dir.FullName -Filter '*.md' -Recurse -File)
+    foreach ($markdown in $markdownFiles) {
+        $text = [System.IO.File]::ReadAllText($markdown.FullName, [System.Text.Encoding]::UTF8)
+        $relative = $markdown.FullName.Substring($Dir.FullName.Length).TrimStart('\')
 
         if ($text -match $localPathPattern) {
-            $problems.Add("Local or sandbox path found in $(Split-Path $markdown -Leaf)")
+            $problems.Add("Local or sandbox path found in $relative")
         }
         if ($text -match $mojibakePattern) {
-            $problems.Add("Possible encoding damage in $(Split-Path $markdown -Leaf)")
+            $problems.Add("Possible encoding damage in $relative")
         }
 
-        foreach ($match in [regex]::Matches($text, $linkPattern)) {
+        $prose = Get-MarkdownProse -Text $text
+        $baseDirectory = Split-Path -Parent $markdown.FullName
+
+        foreach ($match in [regex]::Matches($prose, $linkPattern)) {
             $link = $match.Groups[1].Value
             if ($link -match '^(https?:|mailto:|data:)') { continue }
-            $target = Join-Path $Dir.FullName (($link -replace '/', '\'))
+            $target = Join-Path $baseDirectory (($link -replace '/', '\'))
             if (-not (Test-Path -LiteralPath $target)) {
-                $problems.Add("Broken link in $(Split-Path $markdown -Leaf): $link")
+                $problems.Add("Broken link in ${relative}: $link")
             }
         }
 
-        foreach ($match in [regex]::Matches($text, $imagePattern)) {
+        foreach ($match in [regex]::Matches($prose, $imagePattern)) {
             $link = $match.Groups[1].Value
             if ($link -match '^(https?:|data:)') { continue }
-            $target = Join-Path $Dir.FullName (($link -replace '/', '\'))
+            $target = Join-Path $baseDirectory (($link -replace '/', '\'))
             if (-not (Test-Path -LiteralPath $target)) {
-                $problems.Add("Broken image in $(Split-Path $markdown -Leaf): $link")
+                $problems.Add("Broken image in ${relative}: $link")
             }
         }
     }
