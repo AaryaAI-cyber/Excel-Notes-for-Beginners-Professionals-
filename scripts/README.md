@@ -9,7 +9,7 @@ Publishes **exactly one** Excel Notes module per calendar day to `main`, so the 
 1. Verifies the repository, the staging library, and the `main` branch.
 2. Sets the **local** Git identity to the GitHub noreply address, so no private email appears in public commits.
 3. Runs `git fetch origin` and `git pull --rebase --autostash origin main`.
-4. Stops cleanly if a `docs: add Module` commit already exists for today.
+4. Stops cleanly if a `docs: add Module` commit already exists for the run date. The run date is captured at the start of the run, so a midnight rollover cannot cause a double publish.
 5. Picks the next staging folder (`01` to `35`) that Git does not track yet.
 6. Validates the module before publishing:
    - `README.md`, `exercises_and_solutions.md`, `practice_workbook.xlsx`, and `images/` exist.
@@ -82,4 +82,4 @@ If you move it, set the `EXCEL_NOTES_STAGING` environment variable to the new pa
 - It never modifies the separate `production-data-science-ai` repository, script, or scheduled task.
 - The local Git identity is set inside this repository only.
 - A failed push is rolled back, so the next run starts from a clean state.
-- The one-module-per-day guard uses the commit message and committer date, so a second run on the same day exits without publishing.
+- The one-module-per-day guard uses the commit message and committer date, plus the run date captured at the start of the run, so a second run on the same day exits without publishing and a midnight rollover cannot cause a double publish.

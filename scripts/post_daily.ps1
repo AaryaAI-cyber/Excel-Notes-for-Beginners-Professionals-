@@ -7,7 +7,9 @@
       1. Verifies the repository, staging library, and main branch.
       2. Sets the local Git identity to the GitHub noreply address.
       3. Fetches origin and pulls with rebase + autostash.
-      4. Stops cleanly if a "docs: add Module" commit already exists today.
+      4. Stops cleanly if a "docs: add Module" commit already exists for the
+         run date (captured at the start of the run, so a midnight rollover
+         cannot cause a double publish).
       5. Picks the next staging folder (01..35) that Git does not track yet.
       6. Validates the module: required files, links, images, workbook,
          local paths, encoding, and the standard lesson structure.
@@ -350,6 +352,12 @@ function Invoke-Publish {
     Write-Log "Repository: $RepoPath"
     Write-Log "Staging:    $StagingPath"
 
+    # Capture the calendar date at the start of the run. A run that starts
+    # before midnight and finishes after midnight still belongs to the start
+    # date, so it can never publish twice in one daily cycle.
+    $runDate = Get-Date -Format 'yyyy-MM-dd'
+    Write-Log "Run date: $runDate"
+
     if (-not (Test-Path -LiteralPath $RepoPath)) {
         Fail "Repository not found: $RepoPath"
     }
@@ -373,10 +381,9 @@ function Invoke-Publish {
     Write-Log 'Pulling with rebase and autostash...'
     $null = Assert-Git -GitArgs @('pull', '--rebase', '--autostash', $Remote, $Branch) -Action 'git pull --rebase --autostash'
 
-    $today = Get-Date -Format 'yyyy-MM-dd'
     $lastDate = (Invoke-Git -GitArgs @('log', '-1', '--format=%cs', '--grep=^docs: add Module')).Output
-    if ($lastDate -eq $today) {
-        Write-Log "Already published a module today ($today). Nothing to do." 'OK'
+    if ($lastDate -eq $runDate) {
+        Write-Log "Already published a module on this run date ($runDate). Nothing to do." 'OK'
         return
     }
 
