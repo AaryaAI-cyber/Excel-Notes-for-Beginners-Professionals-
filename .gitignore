@@ -1,0 +1,30 @@
+# Excel temporary and lock files
+~$*
+*.tmp
+*.xlk
+.~lock.*#
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Logs written by scripts/post_daily.ps1
+scripts/logs/
+*.log
+
+# Local backups
+*.bak
+*.orig

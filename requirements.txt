@@ -1,0 +1,5 @@
+# Optional packages for the Python examples in this repository
+# (lessons 25 and 27) and for opening the practice workbooks in code.
+# Install with:  python -m pip install -r requirements.txt
+openpyxl>=3.1
+pandas>=2.0
