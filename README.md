@@ -38,14 +38,14 @@
 > **Status key:** `✅ Published` means the module is live on `main`. `⏳ Scheduled` means it is queued in the daily publishing pipeline.
 
 <!-- PROGRESS:START -->
-**Publishing progress:** `░░░░░░░░░░░░░░░░░░░░` **0 / 35 modules** (0%)
+**Publishing progress:** `█░░░░░░░░░░░░░░░░░░░` **1 / 35 modules** (3%)
 
-**Next automated publish:** Module 01 — Excel Basics and Interface · 21:30 local time
+**Next automated publish:** Module 02 - Data Entry and Number Formats - 21:30 local time
 <!-- PROGRESS:END -->
 
 | Module # | Folder | Topic & Core Skills | Status |
 |---|---|---|---|
-| 01 | `01_excel_basics_and_interface` | Workbook and worksheet model, ribbon navigation, cell entry, ranges, first formulas, AutoSum | ⏳ Scheduled |
+| 01 | [01_excel_basics_and_interface](01_excel_basics_and_interface/README.md) | Workbook and worksheet model, ribbon navigation, cell entry, ranges, first formulas, AutoSum | ✅ Published |
 | 02 | `02_data_entry_and_number_formats` | Data types, clean layouts, number, date and time formats, custom formats, text-to-number fixes | ⏳ Scheduled |
 | 03 | `03_formulas_and_cell_references` | Relative, absolute and mixed references, named ranges, formula auditing, cross-sheet links | ⏳ Scheduled |
 | 04 | `04_logical_functions` | IF, IFS, AND, OR, NOT, SWITCH, nested logic, conditional counting and summing | ⏳ Scheduled |
