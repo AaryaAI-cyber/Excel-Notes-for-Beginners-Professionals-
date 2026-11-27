@@ -38,9 +38,9 @@
 > **Status key:** `✅ Published` means the module is live on `main`. `⏳ Scheduled` means it is queued in the daily publishing pipeline.
 
 <!-- PROGRESS:START -->
-**Publishing progress:** `██░░░░░░░░░░░░░░░░░░` **3 / 35 modules** (9%)
+**Publishing progress:** `██░░░░░░░░░░░░░░░░░░` **4 / 35 modules** (11%)
 
-**Next automated publish:** Module 04 - Logical Functions - 21:30 local time
+**Next automated publish:** Module 05 - Lookup Functions - 21:30 local time
 <!-- PROGRESS:END -->
 
 | Module # | Folder | Topic & Core Skills | Status |
@@ -48,7 +48,7 @@
 | 01 | [01_excel_basics_and_interface](01_excel_basics_and_interface/README.md) | Workbook and worksheet model, ribbon navigation, cell entry, ranges, first formulas, AutoSum | ✅ Published |
 | 02 | [02_data_entry_and_number_formats](02_data_entry_and_number_formats/README.md) | Data types, clean layouts, number, date and time formats, custom formats, text-to-number fixes | ✅ Published |
 | 03 | [03_formulas_and_cell_references](03_formulas_and_cell_references/README.md) | Relative, absolute and mixed references, named ranges, formula auditing, cross-sheet links | ✅ Published |
-| 04 | `04_logical_functions` | IF, IFS, AND, OR, NOT, SWITCH, nested logic, conditional counting and summing | ⏳ Scheduled |
+| 04 | [04_logical_functions](04_logical_functions/README.md) | IF, IFS, AND, OR, NOT, SWITCH, nested logic, conditional counting and summing | ✅ Published |
 | 05 | `05_lookup_functions` | VLOOKUP, HLOOKUP, INDEX-MATCH, XLOOKUP, approximate match, two-way lookups, error-safe lookups | ⏳ Scheduled |
 | 06 | `06_text_functions` | TRIM, CLEAN, LEFT, RIGHT, MID, FIND, SEARCH, SUBSTITUTE, TEXTJOIN, text cleaning | ⏳ Scheduled |
 | 07 | `07_date_and_time_functions` | Date serials, EDATE, EOMONTH, DATEDIF, NETWORKDAYS, WORKDAY, time calculations | ⏳ Scheduled |
